@@ -26,7 +26,7 @@ function main() {
     let prenotazioni = [];
     while (true) 
     {
-        console.log("--- Menù ---\n1. Inserimento Prenotazione\n2. Annullamento Prenotazione\n3. Visualizzazione Prenotazioni (Generico)\n0. Uscita dal programma");
+        console.log("--- Menù ---\n1. Inserimento Prenotazione\n2. Annullamento Prenotazione\n3. Visualizzazione Prenotazioni (Generico)\n4. Ricerca Temporale (Giornata)\n5. Ricerca Temporale (Settimana)\n6. Ordinamento Cronologico\n0. Uscita dal programma");
         let scelta;
         do {
             scelta = Number(prompt("Scelta: "));
@@ -35,8 +35,15 @@ function main() {
         switch (scelta){
             case 1: //Inserimento nuova prenotazione
                 let nuovaPrenotazione = f.inserimentoDati(prenotazioni);
-                prenotazioni.push(nuovaPrenotazione);
-                console.log("\x1b[32mPrenotazione Aggiunta\x1b[0m");
+                if (f.controlloPrenotazioni(prenotazioni, nuovaPrenotazione))
+                {
+                    prenotazioni.push(nuovaPrenotazione);
+                    console.log("\x1b[32mPrenotazione Aggiunta\x1b[0m");
+                }
+                else
+                {
+                    console.log("\x1b[31mLaboratorio Occupato\x1b[0m");
+                }
                 break;
             case 2: //Cancellamento di una prenotazione tramite inserimento dati
                 let cancella = f.inserimentoDati();
@@ -53,6 +60,17 @@ function main() {
                 break;
             case 3: //Visualizzazione generica prenotazioni
                 prenotazioni.forEach(x => console.log(x));
+                break;
+            case 4: //Ricerca delle prenotazioni effettuate in una determinata giornata
+                let dataGiorno = f.inserimentoData();
+                f.ricercaTemporaleGiornaliera(prenotazioni, dataGiorno);
+                break;
+            case 5: //Ricerca delle prenotazioni effettuate in una determinata settimana
+                let dataSettimana = f.inserimentoData();
+                f.ricercaTemporaleSettimanale(prenotazioni, dataSettimana);
+                break;
+            case 6: //Visualizzazione delle prenotazioni in ordine cronologico
+                f.ordinamento(prenotazioni);
                 break;
             case 0: //Uscita dal programma
                 console.log("\x1b[34mUscita dal Programma\x1b[0m");
